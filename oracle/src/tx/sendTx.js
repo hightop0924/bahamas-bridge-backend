@@ -9,7 +9,7 @@ async function sendTx(opts) {
       data,
       value,
       gas: gasLimit,
-      ...gasOpts
+      // ...gasOpts
     },
     privateKey
   )
