@@ -6,11 +6,13 @@ const {
   ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY,
   ORACLE_HOME_START_BLOCK,
   ORACLE_HOME_END_BLOCK,
-  ORACLE_BRIDGE_MODE
+  ORACLE_BRIDGE_MODE,
+  INFURA_URL
 } = process.env
 
 const fs = require('fs')
 const promiseLimit = require('promise-limit')
+const axios = require('axios');
 
 const { web3Home, web3Foreign } = require('../src/services/web3')
 const { getBridgeABIs, getPastEvents, parseAMBMessage, BRIDGE_MODES } = require('../../commons')
@@ -47,6 +49,7 @@ async function main() {
     result[msg.msgHash] = wallet.sign(msg.message).signature
   })
 
+  
   console.log('Writing results')
   if (output === '-') {
     console.log(JSON.stringify(result))

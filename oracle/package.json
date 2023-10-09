@@ -34,6 +34,7 @@
     "@flashbots/ethers-provider-bundle": "^0.4.3",
     "amqp-connection-manager": "^2.0.0",
     "amqplib": "^0.5.2",
+    "axios": "^1.5.1",
     "bignumber.js": "^7.2.1",
     "dotenv": "^5.0.1",
     "ethers": "^5.5.3",

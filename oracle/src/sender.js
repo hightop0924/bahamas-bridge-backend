@@ -5,6 +5,7 @@ const { redis } = require('./services/redisClient')
 const GasPrice = require('./services/gasPrice')
 const logger = require('./services/logger')
 const { getShutdownFlag } = require('./services/shutdownState')
+const axios = require('axios');
 const { sendTx } = require('./tx/sendTx')
 const { getNonce, getChainId } = require('./tx/web3')
 const {
@@ -21,9 +22,18 @@ const {
   isInsufficientBalanceError,
   isNonceError
 } = require('./utils/utils')
-const { EXIT_CODES, EXTRA_GAS_PERCENTAGE, MAX_GAS_LIMIT, MIN_GAS_PRICE_BUMP_FACTOR } = require('./utils/constants')
+const { EXIT_CODES, 
+      EXTRA_GAS_PERCENTAGE, 
+      MAX_GAS_LIMIT, 
+      MIN_GAS_PRICE_BUMP_FACTOR,  } = require('./utils/constants')
 
-const { ORACLE_TX_REDUNDANCY } = process.env
+const {
+  ORACLE_TX_REDUNDANCY, 
+  ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY,
+  INFURA_URL,
+  ORACLE_HOME_START_BLOCK,
+  ORACLE_HOME_END_BLOCK,
+  ORACLE_BRIDGE_MODE, } = process.env
 
 if (process.argv.length < 3) {
   logger.error('Please check the number of arguments, config file was not provided')
@@ -39,7 +49,7 @@ const nonceKey = `${config.id}:nonce`
 let chainId = 0
 
 async function initialize() {
-  try {
+  try {    
     const checkHttps = checkHTTPS(process.env.ORACLE_ALLOW_HTTP_FOR_RPC, logger)
 
     web3.currentProvider.urls.forEach(checkHttps(config.id))
